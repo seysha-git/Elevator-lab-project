@@ -9,7 +9,7 @@ void dox_test_1(){
     printf("Hello world");
 }
 void dox_test_2(){
-    printf("No poles in right half plane!");
+    printf("No poles in right half planeeee!");
 }
 
 int main(){
