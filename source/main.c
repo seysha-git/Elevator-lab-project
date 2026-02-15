@@ -3,8 +3,14 @@
 #include <signal.h>
 #include <time.h>
 #include "driver/elevio.h"
+#include <main.h>
 
-
+void dox_test_1(){
+    printf("Hello world");
+}
+void dox_test_2(){
+    printf("No poles in right half plane!");
+}
 
 int main(){
     elevio_init();
