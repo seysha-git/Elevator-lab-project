@@ -1,5 +1,6 @@
 #include "../driver/elevio.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void orders_addOrder(int floor, int btnType, int motorDir);
 void orders_removeOrder(int floor);
