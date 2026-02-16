@@ -22,6 +22,7 @@ int main(){
         if(floor == 0){
             elevio_motorDirection(DIRN_UP);
             timer_end();
+            break;
         }
 
         if(floor == N_FLOORS-1){

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include "driver/elevio.h"
+#include "time.h"
 #include "modules/timer.h"
 /**
 * @file
