@@ -1,5 +1,6 @@
 
 #include "main.h"
+#include "driver/elevio.h"
 
 void dox_test_1(){
     printf("Hello world");
@@ -22,7 +23,6 @@ int main(){
         if(floor == 0){
             elevio_motorDirection(DIRN_UP);
             timer_end();
-            break;
         }
 
         if(floor == N_FLOORS-1){
@@ -35,6 +35,17 @@ int main(){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
                 elevio_buttonLamp(f, b, btnPressed);
+            }
+        }
+
+        if(floor == 1){
+            printf("stoppp");
+            elevio_motorDirection(DIRN_STOP);
+            door_open();
+            if(timer_timePassed(3)){
+                door_close();
+                elevio_motorDirection(DIRN_UP);
+
             }
         }
 
