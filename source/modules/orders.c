@@ -1,6 +1,5 @@
 #include "orders.h"
-#include "elevio.h"
-#include <stdlib.h>
+
 
 int g_ordersUp[4] = {0, 0, 0, 0};
 int g_ordersDown[4] = {0, 0, 0, 0};

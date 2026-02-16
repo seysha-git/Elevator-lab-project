@@ -57,7 +57,6 @@ int main(){
         } else {
             elevio_stopLamp(0);
         }
-        RN_STOP   = 0,
         if(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
             break;
