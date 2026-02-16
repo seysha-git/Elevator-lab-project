@@ -29,7 +29,7 @@ int main(){
         if(floor == 0){
             elevio_motorDirection(DIRN_UP);
             end = time(NULL);
-            timeStopped = 1
+            timeStopped = 1;
             break;
         }
 
