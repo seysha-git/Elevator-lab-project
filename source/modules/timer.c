@@ -25,5 +25,5 @@ int timer_timePassed(int final_time){
 }
 
 void timer_displayPassedTime(){
-    prinf(difftime(end, start));
+    printf("%.2f", difftime(end, start));
 }
