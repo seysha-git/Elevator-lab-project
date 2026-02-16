@@ -3,7 +3,7 @@
 #include <signal.h> 
 #include <time.h>
 #include "driver/elevio.h"
-#include "timer.h"
+#include "./modules/timer.h"
 /**
 * @file
 * @brief A simple library for doing operations on memory
