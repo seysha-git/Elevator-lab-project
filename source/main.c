@@ -21,11 +21,12 @@ int main(){
 
         if(floor == 0){
             elevio_motorDirection(DIRN_UP);
-            printf("Down");
+            timer_end();
         }
 
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
+            timer_start();
         }
 
 
@@ -49,6 +50,6 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
-
+    timer_displayPassedTime();
     return 0;
 }
