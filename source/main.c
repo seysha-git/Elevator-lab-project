@@ -20,9 +20,11 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
     
     int floor = 5;
-    while (floor==5);
-    if (elevio_floorSensor!=-1){
-            int floor = elevio_floorSensor();
+    while (floor==5){
+        elevio_motorDirection(DIRN_DOWN);
+        if (elevio_floorSensor() !=-1){
+             int floor = elevio_floorSensor();
+    }
     }
 
     while(1){

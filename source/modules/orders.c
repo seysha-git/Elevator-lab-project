@@ -50,7 +50,7 @@ int orders_nextFloor(int currFloor, int motorDir){
         case 0:
             motorDir = 1;
             for (int f = 0; f < currFloor; f++){
-                if (g_ordersDown[f] = 1){
+                if (g_ordersDown[f] == 1){
                     nextFloor = f;
                     motorDir = 0;
                     break;
@@ -59,7 +59,7 @@ int orders_nextFloor(int currFloor, int motorDir){
         case 1:
             motorDir = 0;
             for (int f = (N_FLOORS-1); f > currFloor; f--){
-                if (g_ordersUp[f] = 1){
+                if (g_ordersUp[f] == 1){
                     nextFloor = f;
                     motorDir = 1;
                     break;
