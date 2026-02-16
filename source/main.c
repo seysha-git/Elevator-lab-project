@@ -20,6 +20,7 @@ int main(){
 
     elevio_motorDirection(DIRN_UP);
 
+    int timeStopped = 0;
     time_t start, end;
 
     while(1){
@@ -28,6 +29,7 @@ int main(){
         if(floor == 0){
             elevio_motorDirection(DIRN_UP);
             end = time(NULL);
+            timeStopped = 1
             break;
         }
 
@@ -58,7 +60,8 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
-     printf("Time taken between second and last floor is %.2f seconds", difftime(end, start));
-
+    if(timeStopped){
+        printf("Time taken between second and last floor is %.2f seconds", difftime(end, start));
+    } 
     return 0;
 }
