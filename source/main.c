@@ -19,17 +19,15 @@ int main(){
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
     
-    int floor = 5;
-    while (floor==5){
-        elevio_motorDirection(DIRN_DOWN);
-        if (elevio_floorSensor() !=-1){
-             int floor = elevio_floorSensor();
-    }
-    }
-
+    int defined = 0;
     while(1){
-        if (elevio_floorSensor()!=-1){
-            int floor = elevio_floorSensor();
+        int floor = elevio_floorSensor();
+        if((floor<0) && !defined){
+            elevio_motorDirection(DIRN_DOWN);
+            defined = 1;
+        }
+        else {
+            elevio_motorDirection(DIRN_STOP);
         }
         int motorDir = 0;
         int nextFloor = orders_nextFloor(floor, motorDir);
