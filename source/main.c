@@ -4,6 +4,7 @@
 #include <time.h>
 #include "driver/elevio.h"
 #include "main.h"
+#include "modules/orders.h"
 
 void dox_test_1(){
     printf("Hello world");
@@ -17,25 +18,37 @@ int main(){
     
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-
-    elevio_motorDirection(DIRN_UP);
+    
+    int floor = 5;
+    while (floor==5);
+    if (elevio_floorSensor!=-1){
+            int floor = elevio_floorSensor();
+    }
 
     while(1){
-        int floor = elevio_floorSensor();
-
-        if(floor == 2){
+        if (elevio_floorSensor()!=-1){
+            int floor = elevio_floorSensor();
+        }
+        int motorDir = 0;
+        int nextFloor = orders_nextFloor(floor, motorDir);
+        
+        if (floor == nextFloor){
+            elevio_motorDirection(DIRN_STOP);
+            orders_removeOrder(floor);
+        }
+        if (nextFloor > floor){
             elevio_motorDirection(DIRN_UP);
         }
-
-        if(floor == N_FLOORS-1){
+        if (nextFloor < floor){
             elevio_motorDirection(DIRN_DOWN);
         }
 
-
-        for(int f = 0; f < N_FLOORS; f++){
+        for (int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
-                elevio_buttonLamp(f, b, btnPressed);
+                if (btnPressed>0){
+                    orders_addOrder(f, b, motorDir);
+                }
             }
         }
 
