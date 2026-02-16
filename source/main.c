@@ -24,11 +24,13 @@ int main(){
         int floor = elevio_floorSensor();
         if((floor<0) && !defined){
             elevio_motorDirection(DIRN_DOWN);
-            defined = 1;
+            
         }
         else {
             elevio_motorDirection(DIRN_STOP);
+            defined = 1;
         }
+        /*
         int motorDir = 0;
         int nextFloor = orders_nextFloor(floor, motorDir);
         
@@ -51,6 +53,8 @@ int main(){
                 }
             }
         }
+        */
+        
 
         if(elevio_obstruction()){
             elevio_stopLamp(1);
