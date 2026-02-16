@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
+#include <signal.h> 
 #include <time.h>
 #include "driver/elevio.h"
-#include <main.h>
+#include "main.h"
 
 void dox_test_1(){
     printf("Hello world");
@@ -20,16 +20,22 @@ int main(){
 
     elevio_motorDirection(DIRN_UP);
 
+    time_t start, end;
+
     while(1){
         int floor = elevio_floorSensor();
 
-        if(floor == 0){
+        if(floor == 1){
             elevio_motorDirection(DIRN_UP);
+            start = time(NULL);
         }
 
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
+            end = time(NULL);
         }
+
+        printf("Time taken between second and last floor is %.2f seconds", difftime(end, start));
 
 
         for(int f = 0; f < N_FLOORS; f++){
