@@ -19,8 +19,9 @@ void orders_addOrder(int floor, int btnType, int currFloor){
             g_ordersDown[floor] = 1;
         }
     }
-    printf("Orders Up: ", g_ordersUp);
-    printf("Orders Down: ", g_ordersDown);
+    for(int i =0; i <4; i++){
+        printf("%d ", g_ordersUp[i]);
+    }
 }
 
 void orders_removeOrder(int floor){
@@ -35,27 +36,30 @@ void orders_removeAll(){
     }
 }
 
-int orders_nextFloor(int currFloor, int motorDir){
+int orders_nextFloor(int currFloor, int* motorDir){
     int nextFloor = currFloor;
-    switch (motorDir){
+
+    switch (*motorDir){
         case 0:
-            motorDir = 1;
+            *motorDir = 1;
             for (int f = currFloor; f >=0; f--){
                 if (g_ordersDown[f] == 1){
                     nextFloor = f;
-                    motorDir = 0;
+                    *motorDir = 0;
                     break;
                 }
             }
+            break;
         case 1:
-            motorDir = 0;
+            *motorDir = 0;
             for (int f = 0; f <= currFloor; f++){
                 if (g_ordersUp[f] == 1){
                     nextFloor = f;
-                    motorDir = 1;
+                    *motorDir = 1;
                     break;
                 }
             }
+            break;
     }
 
     return nextFloor;

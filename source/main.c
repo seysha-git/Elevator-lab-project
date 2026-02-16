@@ -20,12 +20,15 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
     
     int defined = 0;
+    int motorDir = 0;
+    int currFloor = 0;
     while(1){
         int floor = elevio_floorSensor();
-        int currFloor = 0;
-        int motorDir = 0;
-        int nextFloor = orders_nextFloor(floor, motorDir);
+        int nextFloor = orders_nextFloor(floor, &motorDir);
 
+
+        printf("%d Motor dir: ", motorDir);
+        printf("\n");
         if((floor<0) && !defined){
             elevio_motorDirection(DIRN_DOWN);   
         }
@@ -55,6 +58,7 @@ int main(){
                 int btnPressed = elevio_callButton(f, b);
                 if (btnPressed>0){
                     orders_addOrder(f, b, currFloor);
+                    printf("%d \n", nextFloor);
                 }
             }
         }
