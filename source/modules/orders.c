@@ -19,6 +19,8 @@ void orders_addOrder(int floor, int btnType, int currFloor){
             g_ordersDown[floor] = 1;
         }
     }
+    printf("Orders Up: ", g_ordersUp);
+    printf("Orders Down: ", g_ordersDown);
 }
 
 void orders_removeOrder(int floor){
