@@ -4,31 +4,20 @@
 int g_ordersUp[4] = {0, 0, 0, 0};
 int g_ordersDown[4] = {0, 0, 0, 0};
 
-void orders_addOrder(int floor, int btnType, int motorDir){
-    int currFloor = elevio_floorSensor();
-    switch (motorDir){
-        case 0:
-            printf("Down");
-            
-            //  Legger til bestillingen i riktig liste
-            if ((currFloor>floor) && btnType>0){
-                g_ordersDown[floor] = 1;
-            }
-            else {
-                g_ordersUp[floor] = 1;
-            }
-            
-            break;
-        case 1:
-            printf("Up");
-            
-            if ((currFloor<floor) && (btnType == 0 || btnType ==2)){
-                g_ordersUp[floor] = 1;
-            }
-            else {
-                g_ordersDown[floor] = 1;
-            }
-            break;
+void orders_addOrder(int floor, int btnType, int currFloor){    
+    if(btnType == 0){
+        g_ordersUp[floor] = 1;
+    }
+    if(btnType == 1){
+        g_ordersDown[floor] = 1;
+    }
+    if(btnType==2){
+        if(floor>currFloor){
+            g_ordersUp[floor] = 1;
+        }
+        if(floor<currFloor){
+            g_ordersDown[floor] = 1;
+        }
     }
 }
 
@@ -49,7 +38,7 @@ int orders_nextFloor(int currFloor, int motorDir){
     switch (motorDir){
         case 0:
             motorDir = 1;
-            for (int f = 0; f < currFloor; f++){
+            for (int f = currFloor; f >=0; f--){
                 if (g_ordersDown[f] == 1){
                     nextFloor = f;
                     motorDir = 0;
@@ -58,7 +47,7 @@ int orders_nextFloor(int currFloor, int motorDir){
             }
         case 1:
             motorDir = 0;
-            for (int f = (N_FLOORS-1); f > currFloor; f--){
+            for (int f = 0; f <= currFloor; f++){
                 if (g_ordersUp[f] == 1){
                     nextFloor = f;
                     motorDir = 1;
