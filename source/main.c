@@ -25,17 +25,17 @@ int main(){
     while(1){
         int floor = elevio_floorSensor();
 
-        if(floor == 1){
+        if(floor == 0){
             elevio_motorDirection(DIRN_UP);
-            start = time(NULL);
+            end = time(NULL);
+            break;
         }
 
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
-            end = time(NULL);
+            start = time(NULL);
         }
 
-        printf("Time taken between second and last floor is %.2f seconds", difftime(end, start));
 
 
         for(int f = 0; f < N_FLOORS; f++){
@@ -58,6 +58,7 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
+     printf("Time taken between second and last floor is %.2f seconds", difftime(end, start));
 
     return 0;
 }
