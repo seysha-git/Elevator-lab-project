@@ -11,30 +11,30 @@ void orders_addOrder(int floor, int btnType, int motorDir){
             printf("Down");
             
             //  Legger til bestillingen i riktig liste
-            if ((currFloor>floor) & btnType>0){
-                g_ordersDown[floor-1] = 1;
+            if ((currFloor>floor) && btnType>0){
+                g_ordersDown[floor] = 1;
             }
             else {
-                g_ordersUp[floor-1] = 1;
+                g_ordersUp[floor] = 1;
             }
             
             break;
         case 1:
             printf("Up");
             
-            if ((currFloor<floor) & (btnType == 0 | btnType ==2)){
-                g_ordersUp[floor-1] = 1;
+            if ((currFloor<floor) && (btnType == 0 || btnType ==2)){
+                g_ordersUp[floor] = 1;
             }
             else {
-                g_ordersDown[floor-1] = 1;
+                g_ordersDown[floor] = 1;
             }
             break;
     }
 }
 
 void orders_removeOrder(int floor){
-    g_ordersDown[floor-1] = 0;
-    g_ordersUp[floor-1] = 0;
+    g_ordersDown[floor] = 0;
+    g_ordersUp[floor] = 0;
 }
 
 void orders_removeAll(){
