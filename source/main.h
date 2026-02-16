@@ -1,4 +1,9 @@
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h> 
+#include <time.h>
+#include "driver/elevio.h"
+#include "timer.h"
 /**
 * @file
 * @brief A simple library for doing operations on memory

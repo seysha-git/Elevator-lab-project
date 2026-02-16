@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-void timer_init();
+void timer_start();
 
 void timer_end();
 
-void timer_reset();
+int timer_timePassed(int final_time);
+
+void timer_displayPassedTime();

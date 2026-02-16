@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h> 
-#include <time.h>
-#include "driver/elevio.h"
 #include "main.h"
 
 void dox_test_1(){
@@ -17,25 +12,19 @@ int main(){
     
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-
     elevio_motorDirection(DIRN_UP);
-
-    int timeStopped = 0;
-    time_t start, end;
-
     while(1){
         int floor = elevio_floorSensor();
 
         if(floor == 0){
             elevio_motorDirection(DIRN_UP);
-            end = time(NULL);
-            timeStopped = 1;
-            break;
+            timer_start();
         }
 
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
-            start = time(NULL);
+            timer_end();
+            break;
         }
 
 
@@ -60,8 +49,6 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
-    if(timeStopped){
-        printf("Time taken between second and last floor is %.2f seconds", difftime(end, start));
-    } 
+    timer_displayPassedTime();
     return 0;
 }
