@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <time.h>
 #include "driver/elevio.h"
-#include <main.h>
+#include "main.h"
 
 void dox_test_1(){
     printf("Hello world");
@@ -23,7 +23,7 @@ int main(){
     while(1){
         int floor = elevio_floorSensor();
 
-        if(floor == 0){
+        if(floor == 2){
             elevio_motorDirection(DIRN_UP);
         }
 
