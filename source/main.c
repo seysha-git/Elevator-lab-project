@@ -15,19 +15,18 @@ int main(){
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
 
-    elevio_motorDirection(DIRN_UP);
+    elevio_motorDirection(DIRN_DOWN);
 
     while(1){
         int floor = elevio_floorSensor();
 
         if(floor == 0){
             elevio_motorDirection(DIRN_UP);
-            timer_end();
+            break;
         }
 
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
-            timer_start();
         }
 
 
@@ -38,14 +37,13 @@ int main(){
             }
         }
 
-        if(floor == 1){
-            printf("stoppp");
+        if(floor == 1 || door_waiting()){
             elevio_motorDirection(DIRN_STOP);
             door_open();
             if(timer_timePassed(3)){
+                printf("finished");
                 door_close();
-                elevio_motorDirection(DIRN_UP);
-
+                elevio_motorDirection(DIRN_DOWN);
             }
         }
 
@@ -62,6 +60,5 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
-    timer_displayPassedTime();
     return 0;
 }
