@@ -5,6 +5,7 @@
 #include "time.h"
 #include "modules/timer.h"
 #include "modules/door.h"
+#include "./modules/door.h"
 /**
 * @file
 * @brief A simple library for doing operations on memory
