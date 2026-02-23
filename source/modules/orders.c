@@ -74,6 +74,7 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                 }
             }
             break;
+            
         case DIRN_UP:
             if (switched){
                 for (int f = 0; f < N_FLOORS; f++){
@@ -100,44 +101,4 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
 
     }
     return nextFloor;
-}
-
-
-
-//S.S implementasjon
-
-static int floorOrders[4] = {0, 0, 0, 0};
-static int floorActive[4] = {0,0,0,0};
-void orders_moveElevator(int order_floor, ButtonType btnType, int elevator_floor, MotorDirection *motorDir){
-    if(elevator_floor < order_floor){
-
-    }
-    else if(elevator_floor > order_floor){
-
-    }
-    else
-
-
-
-
-
-
-
-    if(btnType == BUTTON_HALL_UP){
-        g_ordersUp[floor] = 1;
-    }
-    if(btnType == BUTTON_HALL_DOWN){
-        g_ordersDown[floor] = 1;
-    }
-    if(btnType== BUTTON_CAB){
-        if(floor>currFloor){
-            g_ordersUp[floor] = 1;
-        }
-        if(floor<currFloor){
-            g_ordersDown[floor] = 1;
-        }
-    }
-    for(int i =0; i <4; i++){
-        printf("%d ", g_ordersUp[i]);
-    }
 }
