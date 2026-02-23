@@ -1,6 +1,5 @@
 
 #include "main.h"
-#include "driver/elevio.h"
 
 void dox_test_1(){
     printf("Hello world");
@@ -14,11 +13,7 @@ int main(){
     
     printf("=== Example Program ===\n");
     printf("Press the hello stop button on the elevator panel to exit\n");
-    elevio_motorDirection(DIRN_DOWN);
   
-
-
-
     int defined = 0;
     int ventet = 0;
     int currFloor = 0;
@@ -42,22 +37,24 @@ int main(){
             currFloor = floor;
         }
         
-        if (currFloor==nextFloor){
+        if (currFloor==nextFloor){ 
+            int start = timer_start();
             elevio_motorDirection(DIRN_STOP);
-            door_open();
-            while(door_waiting()){
+            while (difftime(timer_elapsedTime(), start)<3){
                 elevio_doorOpenLamp(1);
-            };
-            door_close();
-            nextFloor = currFloor + 1;
+            }
+            elevio_doorOpenLamp(0);
+            nextFloor = 1;
+            
         }
+
         if (currFloor<nextFloor){
             elevio_motorDirection(DIRN_UP);
         }
         if (currFloor>nextFloor){
             elevio_motorDirection(DIRN_DOWN);
         }
-        elevio_doorOpenLamp(0);
+
         /*
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
