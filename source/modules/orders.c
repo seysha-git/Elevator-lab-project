@@ -5,6 +5,8 @@ int g_ordersUp[4] = {0, 0, 0, 0};
 int g_ordersDown[4] = {0, 0, 0, 0};
 int first_order = 0;
 
+//Lite eksperiment
+
 void orders_addOrder(int floor, ButtonType btnType, int currFloor){    
     if(btnType == BUTTON_HALL_UP){
         g_ordersUp[floor] = 1;
