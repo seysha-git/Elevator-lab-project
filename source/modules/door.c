@@ -5,7 +5,6 @@ static int waiting = 0;
 static int door_time_open = 3;
 
 void door_open(){
-    elevio_doorOpenLamp(1);
     timer_start();
     waiting = 1;
 
@@ -13,6 +12,7 @@ void door_open(){
 
 int door_waiting(){
     if(waiting && !timer_timePassed(door_time_open)){
+        elevio_doorOpenLamp(1);
         return 1;
     }
     return 0;

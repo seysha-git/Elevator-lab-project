@@ -14,7 +14,6 @@ int main(){
     
     printf("=== Example Program ===\n");
     printf("Press the hello stop button on the elevator panel to exit\n");
-    printf(" hello");
     elevio_motorDirection(DIRN_DOWN);
   
 
@@ -22,7 +21,6 @@ int main(){
 
     int defined = 0;
     int ventet = 0;
-    MotorDirection motorDir = DIRN_DOWN;
     int currFloor = 0;
 
 
@@ -36,7 +34,7 @@ int main(){
             defined = 1;
         }
     }
-
+    elevio_motorDirection(DIRN_DOWN);   
     while(1){
         int floor = elevio_floorSensor();
         if(floor == N_FLOORS-1){
@@ -46,9 +44,8 @@ int main(){
             printf("0");
             elevio_motorDirection(DIRN_UP);
         }
-        /*
-         if(floor == 2 && !ventet){
-            printf("in story 2 \n ");
+
+        if(floor == 2 && !ventet){
             door_open();
             while(door_waiting()){
                  elevio_motorDirection(DIRN_STOP);
@@ -59,7 +56,6 @@ int main(){
             ventet = 1;
         }
 
-        */
        
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
