@@ -14,13 +14,18 @@ int main(){
     
     printf("=== Example Program ===\n");
     printf("Press the hello stop button on the elevator panel to exit\n");
-
+    printf(" hello");
     elevio_motorDirection(DIRN_DOWN);
-    printf("hello");
+  
+
+
+
     int defined = 0;
     int ventet = 0;
     MotorDirection motorDir = DIRN_DOWN;
     int currFloor = 0;
+
+
     while(!defined){
         int floor = elevio_floorSensor();
         if(floor<0){
@@ -78,6 +83,6 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
-    timer_displayPassedTime();
+    //timer_displayPassedTime();
     return 0;
 }
