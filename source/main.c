@@ -22,8 +22,9 @@ int main(){
     int defined = 0;
     int ventet = 0;
     int currFloor = 0;
+    int nextFloor = 0;
 
-    elevio_doorOpenLamp(0);
+    
     while(!defined){
         int floor = elevio_floorSensor();
         if(floor<0){
@@ -34,9 +35,30 @@ int main(){
             defined = 1;
         }
     }
-    elevio_motorDirection(DIRN_DOWN);   
+      
     while(1){
         int floor = elevio_floorSensor();
+        if (floor>=0){
+            currFloor = floor;
+        }
+        
+        if (currFloor==nextFloor){
+            elevio_motorDirection(DIRN_STOP);
+            door_open();
+            while(door_waiting()){
+                elevio_doorOpenLamp(1);
+            };
+            door_close();
+            nextFloor = currFloor + 1;
+        }
+        if (currFloor<nextFloor){
+            elevio_motorDirection(DIRN_UP);
+        }
+        if (currFloor>nextFloor){
+            elevio_motorDirection(DIRN_DOWN);
+        }
+        elevio_doorOpenLamp(0);
+        /*
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
         }
@@ -52,15 +74,16 @@ int main(){
             elevio_motorDirection(DIRN_UP);
             ventet = 1;
         }
-
+        */
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
+                if (btnPressed>0){
+                    nextFloor = f;
+                }
                 elevio_buttonLamp(f, b, btnPressed);
             }
         }
-
-
 
         if(elevio_obstruction()){
             elevio_stopLamp(1);
