@@ -23,6 +23,7 @@ int main(){
     MotorDirection motorDir = DIRN_DOWN;
     int currFloor = 0;
     int nextFloor = 0;
+    int switched = 1;
     
     while(!defined){
         int floor = elevio_floorSensor();
@@ -43,11 +44,11 @@ int main(){
             elevio_floorIndicator(currFloor);
         }
         
+        nextFloor = orders_nextFloor(currFloor, &motorDir, &switched);  
         
         if (currFloor == nextFloor){
-            nextFloor = orders_nextFloor(currFloor, &motorDir);  
             elevio_motorDirection(DIRN_STOP);
-            orders_removeOrder(currFloor);
+            orders_removeOrder(currFloor, &switched);
         }
         if (nextFloor > currFloor){
             elevio_motorDirection(DIRN_UP);
