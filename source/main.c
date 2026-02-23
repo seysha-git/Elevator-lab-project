@@ -22,6 +22,8 @@ int main(){
     int defined = 0;
     MotorDirection motorDir = DIRN_DOWN;
     int currFloor = 0;
+    int nextFloor = 0;
+    
     while(!defined){
         int floor = elevio_floorSensor();
         if(floor<0){
@@ -29,11 +31,10 @@ int main(){
         }
         else {
             elevio_motorDirection(DIRN_STOP);
+            nextFloor = floor;
             defined = 1;
         }
     }
-    
-    static int floorOrders[4] = {0, 0, 0, 0};
 
     while(1){
         int floor = elevio_floorSensor();    
@@ -41,9 +42,10 @@ int main(){
             currFloor = floor;
             elevio_floorIndicator(currFloor);
         }
-        int nextFloor = orders_nextFloor(currFloor, &motorDir);    
+        
         
         if (currFloor == nextFloor){
+            nextFloor = orders_nextFloor(currFloor, &motorDir);  
             elevio_motorDirection(DIRN_STOP);
             orders_removeOrder(currFloor);
         }
@@ -58,14 +60,11 @@ int main(){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
                 if (btnPressed>0){
-                    
-                    
+                    orders_addOrder(f, b, currFloor);
+                    printf("%d \n", nextFloor);
                 }
-                
             }
         }
-
-
 
         
         if(elevio_obstruction()){
