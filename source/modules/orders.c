@@ -42,17 +42,16 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
     
     /*
     
-    if (DIRN_DOWN og akkurat switchet):
-        Gå til den øverste etasjen som mulig.
-    else if (DIRN_DOWN og ikke akkurat switchet)
-        Gå til den nærmeste etasjen under
-
+    if (DIRN_DOWN og ikke akkurat switched)
+        gå til nærmeste etasje under deg
+        if switched
+            gå til den øverste etasjen i listen
+    
 
     */
     
     switch (*motorDir){
         case DIRN_DOWN:
-            *motorDir = DIRN_UP;
             if (switched){
                 for (int f = N_FLOORS-1; f>=0; f--){
                     if (g_ordersDown[f]==1){
@@ -66,14 +65,16 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                 for (int f = currFloor; f >=0; f--){
                     if (g_ordersDown[f] == 1){
                         nextFloor = f;
-                        *motorDir = DIRN_DOWN;
-                        switched = 1;
                         break;
                     }
                 }
+                if(nextFloor==currFloor){
+                    *motorDir = DIRN_UP;
+                    switched = 1;
+                }
             }
+            break;
         case DIRN_UP:
-            *motorDir = DIRN_DOWN;
             if (switched){
                 for (int f = 0; f < N_FLOORS; f++){
                     if (g_ordersUp[f]==1){
@@ -83,14 +84,15 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                 }
                 switched = 0;
             }
-
             for (int f = currFloor; f < N_FLOORS; f++){
                 if (g_ordersUp[f] == 1){
                     nextFloor = f;
-                    *motorDir = DIRN_UP;
-                    switched = 1;
                     break;
                 }
+            }
+            if (nextFloor==currFloor){
+                *motorDir = DIRN_DOWN;
+                switched = 1;
             }
             break;
         case DIRN_STOP:

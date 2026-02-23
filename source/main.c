@@ -38,11 +38,12 @@ int main(){
             currFloor = floor;
             elevio_floorIndicator(currFloor);
         }
-        int nextFloor = orders_nextFloor(currFloor, &motorDir);    
+        int nextFloor = currFloor;
         
         if (currFloor == nextFloor){
             elevio_motorDirection(DIRN_STOP);
             orders_removeOrder(currFloor);
+            nextFloor = orders_nextFloor(currFloor, &motorDir);    
         }
         if (nextFloor > currFloor){
             elevio_motorDirection(DIRN_UP);
