@@ -50,7 +50,7 @@ int main(){
         if (currFloor == nextFloor){
             elevio_motorDirection(DIRN_STOP);
             elevio_doorOpenLamp(1);
-            sleep(3);
+            //sleep(3);
             elevio_doorOpenLamp(0);
             orders_removeOrder(currFloor, &switched);
             orders_removeOrderLight(currFloor);
