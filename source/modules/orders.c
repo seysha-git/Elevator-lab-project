@@ -105,3 +105,14 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir, int *switched){
     }
     return nextFloor;
 }
+
+
+void orders_addOrderLight(int floor, ButtonType btnType){
+    elevio_buttonLamp(floor, btnType, 1);
+}
+void orders_removeOrderLight(int floor){
+    for(int b = 0; b < N_BUTTONS; b++){
+        elevio_buttonLamp(floor, b, 0);
+        
+    }
+}

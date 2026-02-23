@@ -49,6 +49,7 @@ int main(){
         if (currFloor == nextFloor){
             elevio_motorDirection(DIRN_STOP);
             orders_removeOrder(currFloor, &switched);
+            orders_removeOrderLight(currFloor);
         }
         if (nextFloor > currFloor){
             elevio_motorDirection(DIRN_UP);
@@ -62,6 +63,7 @@ int main(){
                 int btnPressed = elevio_callButton(f, b);
                 if (btnPressed>0){
                     orders_addOrder(f, b, currFloor);
+                    orders_addOrderLight(f, b);
                     printf("%d \n", nextFloor);
                 }
             }
