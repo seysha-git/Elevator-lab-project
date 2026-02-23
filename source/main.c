@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <time.h>
+#include <unistd.h>
 #include "driver/elevio.h"
 #include "main.h"
 #include "modules/orders.h"
@@ -48,6 +49,9 @@ int main(){
         
         if (currFloor == nextFloor){
             elevio_motorDirection(DIRN_STOP);
+            elevio_doorOpenLamp(1);
+            sleep(3);
+            elevio_doorOpenLamp(0);
             orders_removeOrder(currFloor, &switched);
             orders_removeOrderLight(currFloor);
         }
@@ -69,7 +73,6 @@ int main(){
             }
         }
 
-        
         if(elevio_obstruction()){
             elevio_stopLamp(1);
         } else {
