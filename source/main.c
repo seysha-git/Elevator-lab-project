@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "driver/elevio.h"
 #include "main.h"
-#include "modules/orders.h"
+#include "./modules/orders.h"
 
 void dox_test_1(){
     printf("Hello world");
@@ -15,16 +15,10 @@ void dox_test_2(){
 }
 
 int main(){
+    
     elevio_init();
-    
-    printf("=== Example Program ===\n");
-    printf("Press the stop button on the elevator panel to exit\n");
-    
-    int defined = 0;
-    MotorDirection motorDir = DIRN_DOWN;
-    int currFloor = 0;
-    int nextFloor = 0;
-    int switched = 1;
+     int defined = 0;
+    int elevatorFloor = 0;
     
     while(!defined){
         int floor = elevio_floorSensor();
@@ -33,45 +27,44 @@ int main(){
         }
         else {
             elevio_motorDirection(DIRN_STOP);
-            nextFloor = floor;
             defined = 1;
         }
     }
 
+    orders_init();
     while(1){
-        int floor = elevio_floorSensor();    
-        if(floor>=0){
-            currFloor = floor;
-            elevio_floorIndicator(currFloor);
-        }
-        
-        nextFloor = orders_nextFloor(currFloor, &motorDir, &switched);  
-        
-        if (currFloor == nextFloor){
-            elevio_motorDirection(DIRN_STOP);
-            elevio_doorOpenLamp(1);
-            sleep(3);
-            elevio_doorOpenLamp(0);
-            orders_removeOrder(currFloor, &switched);
-            orders_removeOrderLight(currFloor);
-        }
-        if (nextFloor > currFloor){
-            elevio_motorDirection(DIRN_UP);
-        }
-        if (nextFloor < currFloor){
-            elevio_motorDirection(DIRN_DOWN);
-        }
-
+        int floor = elevio_floorSensor();   
+        if(floor >= 0){
+            elevatorFloor = floor;
+        } 
         for (int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
                 if (btnPressed>0){
-                    orders_addOrder(f, b, currFloor);
-                    orders_addOrderLight(f, b);
-                    printf("%d \n", nextFloor);
+                    orders_addOrder(f, elevatorFloor, b);
                 }
             }
         }
+
+
+        if(orders_checkOrder() >= 0){
+            int destinationFloor = orders_getDestinationFloor();
+            if(elevatorFloor != destinationFloor){
+                elevio_motorDirection(orders_getDirection());
+            }
+            else{
+                elevio_motorDirection(DIRN_STOP);
+                //orders_resetOrder(destinationFloor);
+            }
+        }
+        else{
+            elevio_motorDirection(DIRN_STOP);
+            //printf("Waiting on order");
+        }
+
+        
+        
+        
 
         if(elevio_obstruction()){
             elevio_stopLamp(1);
@@ -85,6 +78,6 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
-    //timer_displayPassedTime();
+   
     return 0;
 }

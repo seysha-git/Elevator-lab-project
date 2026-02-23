@@ -2,14 +2,28 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void orders_addOrder(int floor, ButtonType btnType, int currFloor);
-void orders_removeOrder(int floor, int *switched);
-void orders_removeAll();
-int orders_nextFloor(int currFloor, MotorDirection *motorDir, int *switched);
 
-void orders_addOrderLight(int floor, ButtonType btnType);
-void orders_removeOrderLight(int floor);
+/*
+Tom bestilling
+Ny bestilling:
+    -aktiverer etasjen
+    -velger Order struct
+    -setter knapp typen til order objekt og destinasjon floor
+
+*/
+
+struct Order{
+    int destFloorm;
+    MotorDirection dir;
+    ButtonType btnType;
+    int active;
+};
 
 
-
-
+void orders_addOrder(int destFloor, int elevatorFloor, ButtonType btnType);
+MotorDirection orders_getDirection();
+int orders_getDestinationFloor();
+int orders_checkOrder();
+int orders_checkNewOrders(int newElevatorFloor);
+void orders_init();
+void orders_resetOrder(int floor);
