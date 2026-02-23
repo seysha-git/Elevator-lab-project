@@ -40,54 +40,43 @@ void orders_removeAll(){
 int orders_nextFloor(int currFloor, MotorDirection *motorDir){
     int nextFloor = currFloor;
 
-    // while (retning ned) -> neste etasje lik nærmeste etasje i nedover retning.
-    // når (det ikke lenger er etasjer under) -> switch til (retning opp)
+    // Når enden er nådd skal de etasjene som fortsatt er i lista overføres til den andre listen.
 
     switch (*motorDir){
         case DIRN_DOWN:
-            for (int f = currFloor; f >=0; f--){
-                if (g_ordersDown[f] == 1){
-                    nextFloor = f;
-                    break;
-                }
-            }
-            if(nextFloor==currFloor){
-                    nextDir = DIRN_UP;
-                    *motorDir = DIRN_STOP;
-            }
-        case DIRN_UP:
-            for (int f = currFloor; f < N_FLOORS; f++){
-                if (g_ordersUp[f] == 1){
+            for (int f = currFloor; f >= 0; f--){
+                if (g_ordersDown[f]==1){
                     nextFloor = f;
                     break;
                 }
             }
             if (nextFloor==currFloor){
-                    nextDir = DIRN_DOWN; 
-                    *motorDir = DIRN_STOP;
+                *motorDir = DIRN_UP;
+            }
+            for (int f = currFloor; f < N_FLOORS; f++){
+                if (g_ordersDown[f]==1){
+                    g_ordersUp[f] = 1;
                 }
-            break;
-        case DIRN_STOP:
-            if (nextDir==DIRN_DOWN){
-                for (int f = N_FLOORS-1; f>=0; f--){
-                    if (g_ordersDown[f]==1){
-                        nextFloor = f;
-                        *motorDir = DIRN_DOWN;
-                    }
+            }
+        break;
+        case DIRN_UP:
+            for (int f = currFloor; f < N_FLOORS; f++){
+                if (g_ordersUp[f]==1){
+                    nextFloor = f;
                     break;
                 }
             }
-            else {
-                for (int f = 0; f<N_FLOORS; f++){
-                    if (g_ordersUp[f] == 1){
-                        nextFloor = f;
-                        *motorDir = DIRN_UP;
-                    }
-                    break;
+            if (nextFloor==currFloor){
+                *motorDir = DIRN_UP;
+            }
+            for (int f = currFloor; f >= 0; f--){
+                if (g_ordersUp[f]==1){
+                    g_ordersDown[f] = 1;
                 }
             }
-            break;
-        }
+        break;
+    }
+      
 
     /*
     switch (*motorDir){
