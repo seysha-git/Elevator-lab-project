@@ -50,10 +50,10 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                     nextFloor = f;
                     break;
                 }
-                if(nextFloor==currFloor){
+            }
+            if(nextFloor==currFloor){
                     nextDir = DIRN_UP;
                     *motorDir = DIRN_STOP;
-                }
             }
         case DIRN_UP:
             for (int f = currFloor; f < N_FLOORS; f++){
@@ -61,11 +61,11 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                     nextFloor = f;
                     break;
                 }
-                if (nextFloor==currFloor){
+            }
+            if (nextFloor==currFloor){
                     nextDir = DIRN_DOWN; 
                     *motorDir = DIRN_STOP;
                 }
-            }
             break;
         case DIRN_STOP:
             if (nextDir==DIRN_DOWN){
