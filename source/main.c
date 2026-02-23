@@ -32,34 +32,25 @@ int main(){
             defined = 1;
         }
     }
+    
+    static int floorOrders[4] = {0, 0, 0, 0};
+
     while(1){
         int floor = elevio_floorSensor();    
-        if(floor>=0){
-            currFloor = floor;
-            elevio_floorIndicator(currFloor);
-        }
-        int nextFloor = orders_nextFloor(currFloor, &motorDir);    
-        
-        if (currFloor == nextFloor){
-            elevio_motorDirection(DIRN_STOP);
-            orders_removeOrder(currFloor);
-        }
-        if (nextFloor > currFloor){
-            elevio_motorDirection(DIRN_UP);
-        }
-        if (nextFloor < currFloor){
-            elevio_motorDirection(DIRN_DOWN);
-        }
 
         for (int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
                 if (btnPressed>0){
-                    orders_addOrder(f, b, currFloor);
-                    printf("%d \n", nextFloor);
+                    
+                    
                 }
+                
             }
         }
+
+
+
         
         if(elevio_obstruction()){
             elevio_stopLamp(1);
