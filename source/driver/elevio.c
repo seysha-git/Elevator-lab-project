@@ -118,7 +118,6 @@ int elevio_stopButton(void){
     return buf[1];
 }
 
-
 int elevio_obstruction(void){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){9}, 4, 0);
