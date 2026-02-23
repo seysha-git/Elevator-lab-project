@@ -52,7 +52,7 @@ int orders_nextFloor(int currFloor, int* motorDir){
             break;
         case 1:
             *motorDir = 0;
-            for (int f = 0; f <= currFloor; f++){
+            for (int f = currFloor; f < N_FLOORS; f++){
                 if (g_ordersUp[f] == 1){
                     nextFloor = f;
                     *motorDir = 1;
