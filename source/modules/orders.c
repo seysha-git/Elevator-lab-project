@@ -3,6 +3,7 @@
 
 int g_ordersUp[4] = {0, 0, 0, 0};
 int g_ordersDown[4] = {0, 0, 0, 0};
+MotorDirection nextDir = DIRN_DOWN;
 
 void orders_addOrder(int floor, ButtonType btnType, int currFloor){    
     if(btnType == BUTTON_HALL_UP){
@@ -39,6 +40,56 @@ void orders_removeAll(){
 int orders_nextFloor(int currFloor, MotorDirection *motorDir){
     int nextFloor = currFloor;
 
+    // while (retning ned) -> neste etasje lik nærmeste etasje i nedover retning.
+    // når (det ikke lenger er etasjer under) -> switch til (retning opp)
+
+    switch (*motorDir){
+        case DIRN_DOWN:
+            for (int f = currFloor; f >=0; f--){
+                if (g_ordersDown[f] == 1){
+                    nextFloor = f;
+                    break;
+                }
+                if(nextFloor==currFloor){
+                    nextDir = DIRN_UP;
+                    *motorDir = DIRN_STOP;
+                }
+            }
+        case DIRN_UP:
+            for (int f = currFloor; f < N_FLOORS; f++){
+                if (g_ordersUp[f] == 1){
+                    nextFloor = f;
+                    break;
+                }
+                if (nextFloor==currFloor){
+                    nextDir = DIRN_DOWN; 
+                    *motorDir = DIRN_STOP;
+                }
+            }
+            break;
+        case DIRN_STOP:
+            if (nextDir==DIRN_DOWN){
+                for (int f = N_FLOORS-1; f>=0; f--){
+                    if (g_ordersDown[f]==1){
+                        nextFloor = f;
+                        *motorDir = DIRN_DOWN;
+                    }
+                    break;
+                }
+            }
+            else {
+                for (int f = 0; f<N_FLOORS; f++){
+                    if (g_ordersUp[f] == 1){
+                        nextFloor = f;
+                        *motorDir = DIRN_UP;
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+
+    /*
     switch (*motorDir){
         case DIRN_DOWN:
             *motorDir = DIRN_UP;
@@ -61,7 +112,7 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
             break;
         case DIRN_STOP:
             break;
-    }
 
+    }*/
     return nextFloor;
 }
