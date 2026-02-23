@@ -23,7 +23,7 @@ int main(){
     int ventet = 0;
     int currFloor = 0;
 
-
+    elevio_doorOpenLamp(0);
     while(!defined){
         int floor = elevio_floorSensor();
         if(floor<0){
@@ -41,22 +41,18 @@ int main(){
             elevio_motorDirection(DIRN_DOWN);
         }
         if(floor == 0){
-            printf("0");
             elevio_motorDirection(DIRN_UP);
         }
-
-        if(floor == 2 && !ventet){
+        if(floor == 2 && ventet == 0){
             door_open();
             while(door_waiting()){
                  elevio_motorDirection(DIRN_STOP);
             }
-            printf("finished waiting \n");
-            elevio_motorDirection(DIRN_DOWN);
             door_close();
+            elevio_motorDirection(DIRN_UP);
             ventet = 1;
         }
 
-       
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
