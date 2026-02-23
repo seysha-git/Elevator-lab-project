@@ -4,14 +4,14 @@
 int g_ordersUp[4] = {0, 0, 0, 0};
 int g_ordersDown[4] = {0, 0, 0, 0};
 
-void orders_addOrder(int floor, int btnType, int currFloor){    
-    if(btnType == 0){
+void orders_addOrder(int floor, ButtonType btnType, int currFloor){    
+    if(btnType == BUTTON_HALL_UP){
         g_ordersUp[floor] = 1;
     }
-    if(btnType == 1){
+    if(btnType == BUTTON_HALL_DOWN){
         g_ordersDown[floor] = 1;
     }
-    if(btnType==2){
+    if(btnType== BUTTON_CAB){
         if(floor>currFloor){
             g_ordersUp[floor] = 1;
         }
@@ -36,29 +36,30 @@ void orders_removeAll(){
     }
 }
 
-int orders_nextFloor(int currFloor, int* motorDir){
+int orders_nextFloor(int currFloor, MotorDirection *motorDir){
     int nextFloor = currFloor;
 
     switch (*motorDir){
-        case 0:
-            *motorDir = 1;
+        case DIRN_DOWN:
+            *motorDir = DIRN_UP;
             for (int f = currFloor; f >=0; f--){
                 if (g_ordersDown[f] == 1){
                     nextFloor = f;
-                    *motorDir = 0;
+                    *motorDir = DIRN_DOWN;
+                    break;
+                }
+            }
+        case DIRN_UP:
+            *motorDir = DIRN_DOWN;
+            for (int f = currFloor; f < N_FLOORS; f++){
+                if (g_ordersUp[f] == 1){
+                    nextFloor = f;
+                    *motorDir = DIRN_UP;
                     break;
                 }
             }
             break;
-        case 1:
-            *motorDir = 0;
-            for (int f = currFloor; f < N_FLOORS; f++){
-                if (g_ordersUp[f] == 1){
-                    nextFloor = f;
-                    *motorDir = 1;
-                    break;
-                }
-            }
+        case DIRN_STOP:
             break;
     }
 
