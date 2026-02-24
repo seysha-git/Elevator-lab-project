@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../driver/elevio.h"
 
-void door_open();
+int door_opened();
 
 
 void door_close();

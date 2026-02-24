@@ -40,6 +40,8 @@ int main(){
     int nextFloor = 0;
     int switched = 1;
     int stopped = 0;
+    int door = 0;
+    int door_finished = 0;
     
     while(!defined){
         int floor = elevio_floorSensor();
@@ -64,13 +66,27 @@ int main(){
         
         if (currFloor == nextFloor && !stopped){
             elevio_motorDirection(DIRN_STOP);
+            if(door && elevio_obstruction() && !door_finished){
+                elevio_doorOpenLamp(1);
+            }
+            else if(door ){
+                timer_start(currFloor, stopped);
+                while(!timer_elapsedTime()){
+                    elevio_doorOpenLamp(1);
+                    main_buttonUpdates(currFloor,nextFloor);
+                }
+                elevio_doorOpenLamp(0);
+                door = 0;
+                door_finished = 1;
+            }
+            /*
             timer_start(currFloor, stopped);
             while(!timer_elapsedTime()){
                 elevio_doorOpenLamp(1);
                 main_buttonUpdates(currFloor,nextFloor);
             }
             elevio_doorOpenLamp(0);
-            
+            */
             if (floor==-1 && orders_checkOrders(currFloor)){
                 if (motorDir==DIRN_DOWN){
                     currFloor = nextFloor -1;
@@ -82,28 +98,27 @@ int main(){
             if (floor>=0){
                 orders_removeOrder(currFloor, &switched);
                 orders_removeOrderLight(currFloor);
+                door = 1;
+                
             }
         }
 
         
         if (nextFloor > currFloor){
             elevio_motorDirection(DIRN_UP);
+            door_finished = 0;
             motorDir = DIRN_UP;
         }
         if (nextFloor < currFloor){
             elevio_motorDirection(DIRN_DOWN);
+            door_finished = 0;
             motorDir = DIRN_DOWN;
         }
 
         main_buttonUpdates(currFloor, nextFloor);
-
-        if(elevio_obstruction()){
-            elevio_stopLamp(1);
-        } else {
-            elevio_stopLamp(0);
-        }
         if(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
+            elevio_stopLamp(1);
             orders_removeAll();
             orders_removeAllOrderLight();
             if (floor>=0){
@@ -112,6 +127,8 @@ int main(){
             }
         }
         else if (stopped){
+
+            if(elevio_obstruction()){}
             timer_start(currFloor, stopped);
             while(!timer_elapsedTime()){
                 elevio_doorOpenLamp(1);
