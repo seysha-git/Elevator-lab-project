@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "../driver/elevio.h"
-int timer_start();
+void timer_start(int floor);
 
 void timer_end();
 

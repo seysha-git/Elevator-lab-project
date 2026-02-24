@@ -49,8 +49,21 @@ int main(){
         
         if (currFloor == nextFloor){
             elevio_motorDirection(DIRN_STOP);
-            elevio_doorOpenLamp(1);
             //sleep(3);
+            timer_start(currFloor);
+            while(!timer_elapsedTime()){
+                elevio_doorOpenLamp(1);
+                for (int f = 0; f < N_FLOORS; f++){
+                    for(int b = 0; b < N_BUTTONS; b++){
+                        int btnPressed = elevio_callButton(f, b);
+                        if (btnPressed>0){
+                            orders_addOrder(f, b, currFloor);
+                            orders_addOrderLight(f, b);
+                            printf("%d \n", nextFloor);
+                        }
+                    }
+                }
+            }
             elevio_doorOpenLamp(0);
             orders_removeOrder(currFloor, &switched);
             orders_removeOrderLight(currFloor);

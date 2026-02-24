@@ -2,22 +2,28 @@
 
 time_t start, end;
 static int timerActive = 0;
+int previousFloor = -1;
 
-int timer_start(){
-    /*
-    if(!timerActive){
+void timer_start(int floor){
+    if(!timerActive && previousFloor != floor){
         start = time(NULL);
-    }
-    timerActive = 1;
-    */
-    start = time(NULL);
-    return start;
+        previousFloor = floor;
+        timerActive = 1;
+    }    
 }
 
 
 int timer_elapsedTime(){
     end = time(NULL);
-    return end;
+    if(timerActive){
+        if(difftime(end, start) >= 3){
+            timerActive = 0;
+            return 1;
+        }
+        return 0;
+        
+    }
+    return 1;
 }
 
 void timer_displayPassedTime(){
