@@ -40,6 +40,13 @@ void orders_removeAll(){
     }
 }
 
+int orders_checkOrders(int floor){
+    if (g_ordersDown[floor]==1 || g_ordersUp[floor]==1){
+         return 1;
+    }
+    return 0;
+}
+
 int orders_nextFloor(int currFloor, MotorDirection *motorDir, int *switched){
     int nextFloor = currFloor;
     
@@ -112,9 +119,15 @@ void orders_addOrderLight(int floor, ButtonType btnType){
 }
 void orders_removeOrderLight(int floor){
     for(int b = 0; b < N_BUTTONS; b++){
-        elevio_buttonLamp(floor, b, 0);
-        
+        elevio_buttonLamp(floor, b, 0);  
     }
 }
 
+void orders_removeAllOrderLight(){
+    for (int b = 0; b < N_BUTTONS; b++){
+        for (int f = 0; f < N_FLOORS; f++){
+            elevio_buttonLamp(f, b, 0);
+        }
+    }
+}
 

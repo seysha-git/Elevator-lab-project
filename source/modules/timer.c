@@ -4,8 +4,8 @@ time_t start, end;
 static int timerActive = 0;
 int previousFloor = -1;
 
-void timer_start(int floor){
-    if(!timerActive && previousFloor != floor){
+void timer_start(int floor, int stopped){
+    if( !timerActive && (previousFloor != floor || stopped)){
         start = time(NULL);
         previousFloor = floor;
         timerActive = 1;
