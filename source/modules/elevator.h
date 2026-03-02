@@ -1,3 +1,4 @@
+#pragma once
 #include "../driver/elevio.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,7 +10,6 @@
 
 #include "orders.h"
 #include "door.h"
-#include "timer.h"
 
 void elevator_runStartUp();
 void elevator_runOrders();

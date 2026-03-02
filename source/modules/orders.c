@@ -48,7 +48,7 @@ int orders_checkOrders(int floor){
     return 0;
 }
 
-int orders_nextFloor(int currFloor, MotorDirection *motorDir){
+int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *motorDir){
     int nextFloor = currFloor;
 
     if(switched){
@@ -57,7 +57,7 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
     else{
         elevio_buttonLamp(0, BUTTON_CAB, 0);
     }
-    switch (*motorDir){
+    switch (*orderDir){
         case DIRN_DOWN:
             if (switched){
                 for (int f = N_FLOORS-1; f>=0; f--){
@@ -83,8 +83,8 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                 }
             }
             
-            if(nextFloor==currFloor){
-                *motorDir = DIRN_UP;
+            if(nextFloor==currFloor && *motorDir==DIRN_STOP){
+                *orderDir = DIRN_UP;
                 switched = 1;
             }
             break;
@@ -114,8 +114,8 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                     }
                 }
             }
-            if (nextFloor==currFloor){
-                *motorDir = DIRN_DOWN;
+            if (nextFloor==currFloor && *motorDir==DIRN_STOP){
+                *orderDir = DIRN_DOWN;
                 switched = 1;
             }
             break;

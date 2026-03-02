@@ -1,8 +1,9 @@
 #include "timer.h"
 
-time_t start, end;
+//time_t start, end;
 static int timerActive = 0;
 int previousFloor = -1;
+/*
 
 void timer_start(int floor, int stopped){
     if( !timerActive && (previousFloor != floor || stopped)){
@@ -29,4 +30,6 @@ int timer_elapsedTime(){
 void timer_displayPassedTime(){
     printf("%.2f", difftime(end, start));
 }
+*/
+
 
