@@ -3,10 +3,8 @@
 #include <signal.h>
 #include "time.h"
 #include "driver/elevio.h"
+#include "./modules/elevator.h"
 
-
-#include "./modules/timer.h"
-#include "./modules/door.h"
 /**
 * @file
 * @brief A simple library for doing operations on memory

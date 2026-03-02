@@ -3,7 +3,7 @@
 
 int g_ordersUp[4] = {0, 0, 0, 0};
 int g_ordersDown[4] = {0, 0, 0, 0};
-int first_order = 0;
+int switched = 1;
 
 void orders_addOrder(int floor, ButtonType btnType, int currFloor){    
     if(btnType == BUTTON_HALL_UP){
@@ -25,9 +25,9 @@ void orders_addOrder(int floor, ButtonType btnType, int currFloor){
     }
 }
 
-void orders_removeOrder(int floor, int *switched){
+void orders_removeOrder(int floor){
     if ((g_ordersDown[floor]!=0) || g_ordersUp[floor]!=0){
-        *switched = 0;
+        switched = 0;
     }
     g_ordersDown[floor] = 0;
     g_ordersUp[floor] = 0;
@@ -47,7 +47,7 @@ int orders_checkOrders(int floor){
     return 0;
 }
 
-int orders_nextFloor(int currFloor, MotorDirection *motorDir, int *switched){
+int orders_nextFloor(int currFloor, MotorDirection *motorDir){
     int nextFloor = currFloor;
     
     /*
@@ -62,7 +62,7 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir, int *switched){
     
     switch (*motorDir){
         case DIRN_DOWN:
-            if (*switched){
+            if (switched){
                 for (int f = N_FLOORS-1; f>=0; f--){
                     if (g_ordersDown[f]==1){
                         nextFloor = f;
@@ -80,12 +80,12 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir, int *switched){
             }
             if(nextFloor==currFloor){
                 *motorDir = DIRN_UP;
-                *switched = 1;
+                switched = 1;
             }
             break;
 
         case DIRN_UP:
-            if (*switched){
+            if (switched){
                 for (int f = 0; f < N_FLOORS; f++){
                     if (g_ordersUp[f]==1){
                         nextFloor = f;
@@ -103,7 +103,7 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir, int *switched){
             }
             if (nextFloor==currFloor){
                 *motorDir = DIRN_DOWN;
-                *switched = 1;
+                switched = 1;
             }
             break;
         case DIRN_STOP:
@@ -131,3 +131,15 @@ void orders_removeAllOrderLight(){
     }
 }
 
+void orders_buttonUpdates(int currFloor, int nextFloor){
+    for (int f = 0; f < N_FLOORS; f++){
+            for(int b = 0; b < N_BUTTONS; b++){
+                int btnPressed = elevio_callButton(f, b);
+                if (btnPressed>0){
+                    orders_addOrder(f, b, currFloor);
+                    orders_addOrderLight(f, b);
+                    printf("%d \n", nextFloor);
+                }
+            }
+        }
+}
