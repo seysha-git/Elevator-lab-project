@@ -34,6 +34,7 @@ void orders_removeOrder(int floor){
 }
 
 void orders_removeAll(){
+    orders_removeAllOrderLight();
     for (int i = 0; i < N_FLOORS; i++){
         g_ordersDown[i] = 0;
         g_ordersUp[i] = 0;

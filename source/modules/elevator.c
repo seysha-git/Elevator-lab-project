@@ -35,7 +35,7 @@ void elevator_runOrders(){
 
         nextFloor = orders_nextFloor(currState.floor, &currState.orderDir);  
         
-        if (currState.floor == nextFloor && !currState.stopped){
+        if (currState.floor == nextFloor){
             elevio_motorDirection(DIRN_STOP);
             if (floor==-1 && orders_checkOrders(currState.floor)){
                 if (currState.motorDir==DIRN_DOWN){
@@ -45,13 +45,15 @@ void elevator_runOrders(){
                     currState.floor = nextFloor + 1;
                 }
             }
-
             if (floor>=0){
+                door_open(&currState, nextFloor); //Not implemented
                 orders_removeOrder(currState.floor);
                 orders_removeOrderLight(currState.floor);
                 //edoor = 1;
-                
             }
+
+
+
             /*
             if(door && elevio_obstruction() && !door_finished){
                 elevio_doorOpenLamp(1);
@@ -68,7 +70,6 @@ void elevator_runOrders(){
             }
             */            
         }
-
         if (nextFloor > currState.floor){
             elevio_motorDirection(DIRN_UP);
             //door_finished = 0;
@@ -86,20 +87,15 @@ void elevator_runOrders(){
             elevio_motorDirection(DIRN_STOP);
             elevio_stopLamp(1);
             orders_removeAll();
-            orders_removeAllOrderLight();
             if (floor>=0){
                 elevio_doorOpenLamp(1);
                 currState.stopped = 1;
             }
         }
         else if (currState.stopped){
-
+            door_open(&currState, nextFloor); //Not implemented
             if(elevio_obstruction()){}
-            timer_start(currState.floor, currState.stopped);
-            while(!timer_elapsedTime()){
-                elevio_doorOpenLamp(1);
-                orders_buttonUpdates(currState.floor,nextFloor);
-            }
+           
             elevio_doorOpenLamp(0);
             currState.stopped = 0;
         }

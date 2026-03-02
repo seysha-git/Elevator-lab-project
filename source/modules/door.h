@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../driver/elevio.h"
-
-
-void door_open();
+#include "timer.h"
+#include "elevatorObject.h"
+#include "orders.h"
+void door_open(struct elevatorObject *currState, int nextFloor);
