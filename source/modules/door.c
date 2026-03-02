@@ -22,10 +22,13 @@ void door_open(struct elevatorObject *currState, int nextFloor){
                 break;
             case USER_STOP:
                 if(elevio_obstruction()||elevio_stopButton()){
-                    orders_buttonUpdates(currState->floor, nextFloor);
+
                     if(elevio_stopButton()){
                         elevio_stopLamp(1);
-                    }   
+                    }
+                    else{
+                        orders_buttonUpdates(currState->floor,nextFloor);
+                    }
                 }
                 else{
                     elevio_stopLamp(0);

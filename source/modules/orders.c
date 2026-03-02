@@ -50,13 +50,6 @@ int orders_checkOrders(int floor){
 
 int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *motorDir){
     int nextFloor = currFloor;
-
-    if(switched){
-        elevio_buttonLamp(0, BUTTON_CAB, 1);
-    }
-    else{
-        elevio_buttonLamp(0, BUTTON_CAB, 0);
-    }
     switch (*orderDir){
         case DIRN_DOWN:
             if (switched){

@@ -75,7 +75,8 @@ void elevator_runOrders(){
             currState.stopped = 1;
             currState.Stop = USER_STOP;
         }
-        if(elevio_stopButton()){
+        elevio_stopLamp(0);
+        while(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
             currState.orderDir = DIRN_STOP;
             elevio_stopLamp(1);
@@ -85,9 +86,7 @@ void elevator_runOrders(){
                 currState.Stop = USER_STOP;
             }
         }
-        else{
-            elevio_stopLamp(0);
-        }
+        
         if (currState.stopped){
             currState.doorOpen = 1;
             door_open(&currState, nextFloor); //Not implemented
