@@ -25,6 +25,7 @@ void elevator_runOrders(){
     int door = 0;
     int door_finished = 0;
 
+
     while(1){
         int floor = elevio_floorSensor();    
         if(floor>=0){
@@ -36,6 +37,25 @@ void elevator_runOrders(){
         
         if (currFloor == nextFloor && !stopped){
             elevio_motorDirection(DIRN_STOP);
+            if (floor==-1 && orders_checkOrders(currFloor)){
+                if (motorDir==DIRN_DOWN){
+                    currFloor = nextFloor -1;
+                }
+                else{
+                    currFloor = nextFloor + 1;
+                }
+            }
+
+            if (floor>=0){
+                orders_removeOrder(currFloor);
+                orders_removeOrderLight(currFloor);
+                //edoor = 1;
+                
+            }
+
+
+
+            /*
             if(door && elevio_obstruction() && !door_finished){
                 elevio_doorOpenLamp(1);
             }
@@ -49,35 +69,23 @@ void elevator_runOrders(){
                 door = 0;
                 door_finished = 1;
             }
-            if (floor==-1 && orders_checkOrders(currFloor)){
-                if (motorDir==DIRN_DOWN){
-                    currFloor = nextFloor -1;
-                }
-                else{
-                    currFloor = nextFloor + 1;
-                }
-            }
-            if (floor>=0){
-                orders_removeOrder(currFloor);
-                orders_removeOrderLight(currFloor);
-                door = 1;
-                
-            }
+            */            
         }
 
         
         if (nextFloor > currFloor){
             elevio_motorDirection(DIRN_UP);
-            door_finished = 0;
+            //door_finished = 0;
             motorDir = DIRN_UP;
         }
         if (nextFloor < currFloor){
             elevio_motorDirection(DIRN_DOWN);
-            door_finished = 0;
+            //door_finished = 0;
             motorDir = DIRN_DOWN;
         }
 
         orders_buttonUpdates(currFloor, nextFloor);
+
         if(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
             elevio_stopLamp(1);
