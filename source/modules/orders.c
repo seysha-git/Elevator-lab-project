@@ -27,7 +27,7 @@ void orders_addOrder(int floor, ButtonType btnType, int currFloor){
 
 void orders_removeOrder(int floor){
     if ((g_ordersDown[floor]!=0) || g_ordersUp[floor]!=0){
-        switched = 0;
+        //switched = 0;
     }
     g_ordersDown[floor] = 0;
     g_ordersUp[floor] = 0;
@@ -49,17 +49,13 @@ int orders_checkOrders(int floor){
 
 int orders_nextFloor(int currFloor, MotorDirection *motorDir){
     int nextFloor = currFloor;
-    
-    /*
-    
-    if (DIRN_DOWN og akkurat switchet):
-        Gå til den øverste etasjen som mulig.
-    else if (DIRN_DOWN og ikke akkurat switchet
-        Gå til den nærmeste etasjen under
 
-
-    */
-    
+    if(switched){
+        elevio_buttonLamp(0, BUTTON_CAB, 1);
+    }
+    else{
+        elevio_buttonLamp(0, BUTTON_CAB, 0);
+    }
     switch (*motorDir){
         case DIRN_DOWN:
             if (switched){
@@ -69,6 +65,13 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                         break;
                     }
                 }
+                for (int f = currFloor; f<nextFloor; f++){
+                    if(g_ordersUp[f]){
+                        nextFloor = f;
+                        break;
+                    }
+                }
+                
             }
             else{
                 for (int f = currFloor; f >=0; f--){
@@ -78,6 +81,7 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                     }
                 }
             }
+            
             if(nextFloor==currFloor){
                 *motorDir = DIRN_UP;
                 switched = 1;
@@ -92,6 +96,14 @@ int orders_nextFloor(int currFloor, MotorDirection *motorDir){
                         break;
                     }
                 }
+                
+                for (int f = currFloor; f>nextFloor; f--){
+                    if(g_ordersDown[f]){
+                        nextFloor = f;
+                        break;
+                    }
+                }
+                
             }
             else{ 
                 for (int f = currFloor; f < N_FLOORS; f++){

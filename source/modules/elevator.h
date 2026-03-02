@@ -14,3 +14,11 @@
 
 void elevator_runStartUp();
 void elevator_runOrders();
+
+struct elevatorObject{
+    int stopped;
+    MotorDirection orderDir;
+    MotorDirection motorDir;
+    int doorOpen;
+    int floor;
+};
