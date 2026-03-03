@@ -47,6 +47,15 @@ int orders_checkOrders(int floor){
     return 0;
 }
 
+int orders_checkAllOrders(){
+    for(int f = 0; f<N_FLOORS; f++){
+        if(orders_checkOrders(f)){
+            return 1;
+        };
+    }
+    return 0;
+}
+
 int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *motorDir, int *switched){
     int nextFloor = currFloor;
     
@@ -117,7 +126,11 @@ int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *mo
     for (int i = 0; i < N_FLOORS; i++){
         elevio_buttonLamp(i, BUTTON_CAB, 0);
     }
-    elevio_buttonLamp(nextFloor, BUTTON_CAB, 1);
+    for (int i = 0; i < N_FLOORS; i++){
+        if(g_ordersDown[i] || g_ordersUp[i]){
+            elevio_buttonLamp(i, BUTTON_CAB, 1);
+        }
+    }
     return nextFloor;
 }
 

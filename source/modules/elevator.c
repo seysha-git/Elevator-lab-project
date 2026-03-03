@@ -6,6 +6,7 @@ int nextFloor = 0;
 
 void elevator_runStartUp(){
     int defined = 0;
+    orders_removeAll();
     while(!defined){
         int floor = elevio_floorSensor();
         if(floor<0){
@@ -40,8 +41,8 @@ void elevator_runOrders(){
         nextFloor = orders_nextFloor(currState.floor, &currState.orderDir, &currState.motorDir, &currState.swtiched);  
         
         if (currState.floor == nextFloor){
-            if (floor==-1 && currState.orderDir==DIRN_STOP){
-                currState.orderDir = currState.motorDir;
+            if (floor==-1 && currState.orderDir==DIRN_STOP && orders_checkAllOrders()){
+                currState.orderDir = DIRN_UP;
                 currState.swtiched = 1;
                 if(orders_checkOrders(currState.floor)){
                     if (currState.motorDir==DIRN_DOWN){
@@ -51,6 +52,7 @@ void elevator_runOrders(){
                         currState.floor = nextFloor + 1;
                     }
                 }
+                currState.motorDir = DIRN_STOP;
             }
 
             if (floor>=0){
