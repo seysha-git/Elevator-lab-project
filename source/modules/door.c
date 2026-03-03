@@ -7,6 +7,7 @@ static int timerActive = 0;
 void door_open(struct elevatorObject *currState, int nextFloor){
     while (currState->doorOpen){
         elevio_doorOpenLamp(1);
+        
         switch (currState->Stop){
             case ORDER_STOP:
                 door_startTimer();

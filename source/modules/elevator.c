@@ -20,6 +20,8 @@ void elevator_runStartUp(){
     }
     
 }
+
+
 void elevator_runOrders(){
     struct elevatorObject currState = {
         1,

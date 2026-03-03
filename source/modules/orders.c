@@ -19,9 +19,6 @@ void orders_addOrder(int floor, ButtonType btnType, int currFloor){
             g_ordersDown[floor] = 1;
         }
     }
-    for(int i =0; i <4; i++){
-        printf("%d ", g_ordersUp[i]);
-    }
 }
 
 void orders_removeOrder(int floor, int* switched){
@@ -123,14 +120,6 @@ int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *mo
             break;
 
     }
-    for (int i = 0; i < N_FLOORS; i++){
-        elevio_buttonLamp(i, BUTTON_CAB, 0);
-    }
-    for (int i = 0; i < N_FLOORS; i++){
-        if(g_ordersDown[i] || g_ordersUp[i]){
-            elevio_buttonLamp(i, BUTTON_CAB, 1);
-        }
-    }
     return nextFloor;
 }
 
@@ -159,7 +148,6 @@ void orders_buttonUpdates(int currFloor, int nextFloor){
                 if (btnPressed>0){
                     orders_addOrder(f, b, currFloor);
                     orders_addOrderLight(f, b);
-                    printf("%d \n", nextFloor);
                 }
             }
         }
