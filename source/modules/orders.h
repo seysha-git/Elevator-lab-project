@@ -14,7 +14,7 @@ void orders_removeAllOrderLight();
 
 int orders_checkOrders(int floor);
 int orders_checkAllOrders();
-void orders_buttonUpdates(int currFloor, int nextFloor);
+void orders_buttonUpdates(int currFloor);
 
 
 

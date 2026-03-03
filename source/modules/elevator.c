@@ -78,7 +78,7 @@ void elevator_runOrders(){
             currState.motorDir = DIRN_DOWN;
         }
         
-        orders_buttonUpdates(currState.floor, nextFloor);
+        orders_buttonUpdates(currState.floor);
 
         if(elevio_obstruction() && currState.doorOpen){
             currState.stopped = 1;

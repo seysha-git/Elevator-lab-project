@@ -7,13 +7,13 @@ static int timerActive = 0;
 void door_open(struct elevatorObject *currState, int nextFloor){
     while (currState->doorOpen){
         elevio_doorOpenLamp(1);
-        
+
         switch (currState->Stop){
             case ORDER_STOP:
                 door_startTimer();
                 currState->doorOpen = 0;
                 while(!door_elapsedTime()){
-                    orders_buttonUpdates(currState->floor,nextFloor);
+                    orders_buttonUpdates(currState->floor);
                     if(elevio_obstruction()||elevio_stopButton()){
                         currState->Stop = USER_STOP;
                         currState->doorOpen = 1;
@@ -28,7 +28,7 @@ void door_open(struct elevatorObject *currState, int nextFloor){
                         elevio_stopLamp(1);
                     }
                     else{
-                        orders_buttonUpdates(currState->floor,nextFloor);
+                        orders_buttonUpdates(currState->floor);
                     }
                 }
                 else{
