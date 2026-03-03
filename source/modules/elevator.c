@@ -21,6 +21,7 @@ void elevator_runStartUp(){
 }
 void elevator_runOrders(){
     struct elevatorObject currState = {
+        1,
         0, 
         0,
         0, 
@@ -36,18 +37,22 @@ void elevator_runOrders(){
             elevio_floorIndicator(currState.floor);
         }
 
-        nextFloor = orders_nextFloor(currState.floor, &currState.orderDir, &currState.motorDir);  
+        nextFloor = orders_nextFloor(currState.floor, &currState.orderDir, &currState.motorDir, &currState.swtiched);  
         
         if (currState.floor == nextFloor){
-            if (floor==-1 && orders_checkOrders(currState.floor) && currState.orderDir==DIRN_STOP){
-                currState.orderDir = DIRN_UP;   //setter denne til noe random
-                if (currState.motorDir==DIRN_DOWN){
-                    currState.floor = nextFloor - 1;
-                }
-                else{
-                    currState.floor = nextFloor + 1;
+            if (floor==-1 && currState.orderDir==DIRN_STOP){
+                currState.orderDir = currState.motorDir;
+                currState.swtiched = 1;
+                if(orders_checkOrders(currState.floor)){
+                    if (currState.motorDir==DIRN_DOWN){
+                        currState.floor = nextFloor - 1;
+                    }
+                    else{
+                        currState.floor = nextFloor + 1;
+                    }
                 }
             }
+
             if (floor>=0){
                 currState.motorDir = DIRN_STOP;
                 elevio_motorDirection(DIRN_STOP);
@@ -55,7 +60,7 @@ void elevator_runOrders(){
                     currState.Stop = ORDER_STOP;
                     currState.stopped = 1;
                 }
-                orders_removeOrder(currState.floor);
+                orders_removeOrder(currState.floor, &currState.swtiched);
                 orders_removeOrderLight(currState.floor);
             }         
         }

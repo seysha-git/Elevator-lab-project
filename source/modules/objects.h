@@ -7,6 +7,7 @@ typedef enum {
 } StopType;
 
 struct elevatorObject{
+    int swtiched;
     int stopped;
     int doorOpen;
     int floor;

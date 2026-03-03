@@ -3,7 +3,6 @@
 
 int g_ordersUp[4] = {0, 0, 0, 0};
 int g_ordersDown[4] = {0, 0, 0, 0};
-int switched = 1;
 
 void orders_addOrder(int floor, ButtonType btnType, int currFloor){    
     if(btnType == BUTTON_HALL_UP){
@@ -25,9 +24,9 @@ void orders_addOrder(int floor, ButtonType btnType, int currFloor){
     }
 }
 
-void orders_removeOrder(int floor){
+void orders_removeOrder(int floor, int* switched){
     if ((g_ordersDown[floor]!=0) || g_ordersUp[floor]!=0){
-        //switched = 0;
+        *switched = 0;
     }
     g_ordersDown[floor] = 0;
     g_ordersUp[floor] = 0;
@@ -48,11 +47,12 @@ int orders_checkOrders(int floor){
     return 0;
 }
 
-int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *motorDir){
+int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *motorDir, int *switched){
     int nextFloor = currFloor;
+    
     switch (*orderDir){
         case DIRN_DOWN:
-            if (switched){
+            if (*switched && (*motorDir!=*orderDir)){
                 for (int f = N_FLOORS-1; f>=0; f--){
                     if (g_ordersDown[f]==1){
                         nextFloor = f;
@@ -64,8 +64,7 @@ int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *mo
                         nextFloor = f;
                         break;
                     }
-                }
-                
+            }  
             }
             else{
                 for (int f = currFloor; f >=0; f--){
@@ -78,12 +77,12 @@ int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *mo
             
             if(nextFloor==currFloor && *motorDir==DIRN_STOP){
                 *orderDir = DIRN_UP;
-                switched = 1;
+                *switched = 1;
             }
             break;
 
         case DIRN_UP:
-            if (switched){
+            if (*switched && (*motorDir!=*orderDir)){
                 for (int f = 0; f < N_FLOORS; f++){
                     if (g_ordersUp[f]==1){
                         nextFloor = f;
@@ -97,7 +96,6 @@ int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *mo
                         break;
                     }
                 }
-                
             }
             else{ 
                 for (int f = currFloor; f < N_FLOORS; f++){
@@ -109,13 +107,17 @@ int orders_nextFloor(int currFloor, MotorDirection *orderDir ,MotorDirection *mo
             }
             if (nextFloor==currFloor && *motorDir==DIRN_STOP){
                 *orderDir = DIRN_DOWN;
-                switched = 1;
+                *switched = 1;
             }
             break;
         case DIRN_STOP:
             break;
 
     }
+    for (int i = 0; i < N_FLOORS; i++){
+        elevio_buttonLamp(i, BUTTON_CAB, 0);
+    }
+    elevio_buttonLamp(nextFloor, BUTTON_CAB, 1);
     return nextFloor;
 }
 
